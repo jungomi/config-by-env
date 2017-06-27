@@ -34,8 +34,10 @@ function configByEnv(config) {
   if (typeof config.common === 'object') {
     Object.assign(finalConfig, config.common);
   }
-  if (typeof config[env] === 'object') {
-    finalConfig = mergeObjects(finalConfig, config[env]);
+  for (const key of env.split(',')) {
+    if (typeof config[key] === 'object') {
+      finalConfig = mergeObjects(finalConfig, config[key]);
+    }
   }
   return finalConfig;
 }

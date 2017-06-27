@@ -32,12 +32,26 @@ test('uses the development config if no NODE_ENV is set', t => {
   process.env.NODE_ENV = old_env;
 });
 
-test('combines the common and specified configs', t => {
+test('combines the common and the specified config', t => {
   const old_env = process.env.NODE_ENV;
   process.env.NODE_ENV = 'special';
   const config = { common: { x: 1 }, special: { y: 2 } };
   const result = configByEnv(config);
   t.deepEqual(result, { x: 1, y: 2 });
+  process.env.NODE_ENV = old_env;
+});
+
+test('combines the common and multiple specified configs', t => {
+  const old_env = process.env.NODE_ENV;
+  process.env.NODE_ENV = 'special,other,last';
+  const config = {
+    common: { x: 1 },
+    special: { y: 2 },
+    other: { z: 3 },
+    last: { xyz: 123 }
+  };
+  const result = configByEnv(config);
+  t.deepEqual(result, { x: 1, y: 2, z: 3, xyz: 123 });
   process.env.NODE_ENV = old_env;
 });
 
