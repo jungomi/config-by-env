@@ -27,7 +27,7 @@ function mergeObjects(base, extension, options = {}) {
   return merged;
 }
 
-function configByEnv(config) {
+function configByEnv(config, options = {}) {
   const env = process.env.NODE_ENV || 'development';
   let finalConfig = {};
 
@@ -36,7 +36,7 @@ function configByEnv(config) {
   }
   for (const key of env.split(',')) {
     if (typeof config[key] === 'object') {
-      finalConfig = mergeObjects(finalConfig, config[key]);
+      finalConfig = mergeObjects(finalConfig, config[key], options);
     }
   }
   return finalConfig;
