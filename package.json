@@ -1,0 +1,44 @@
+{
+  "name": "config-by-env",
+  "version": "0.1.0",
+  "description": "Easily create configs for different environments",
+  "main": "index.js",
+  "author": "Michael Jungo <michaeljungo92@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jungomi/config-by-env.git"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "config",
+    "configuration",
+    "env",
+    "environment",
+    "merge",
+    "combine"
+  ],
+  "scripts": {
+    "clean": "rimraf coverage",
+    "fix": "eslint . --fix",
+    "lint": "eslint .",
+    "test": "jest",
+    "test-update": "jest -u",
+    "coverage": "jest --coverage"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^4.1.1",
+    "eslint-config-prettier": "^2.2.0",
+    "eslint-plugin-prettier": "^2.1.2",
+    "jest": "^20.0.4",
+    "jest-t-assert": "^0.1.0",
+    "prettier": "^1.5.0",
+    "rimraf": "^2.6.1"
+  }
+}
