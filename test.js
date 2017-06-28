@@ -55,6 +55,17 @@ test('combines the common and multiple specified configs', t => {
   process.env.NODE_ENV = old_env;
 });
 
+test('CONFIG_BY_ENV takes precedence over NODE_ENV', t => {
+  const old_env = process.env.NODE_ENV;
+  process.env.NODE_ENV = 'node';
+  process.env.CONFIG_BY_ENV = 'configByEnv';
+  const config = { common: { x: 1 }, node: { y: 2 }, configByEnv: { a: 99 } };
+  const result = configByEnv(config);
+  t.deepEqual(result, { x: 1, a: 99 });
+  process.env.NODE_ENV = old_env;
+  delete process.env.CONFIG_BY_ENV;
+});
+
 test('overwrites the base properties when the overwrite option is used', t => {
   const base = { a: 1, b: 2 };
   const extension = { a: 99, c: 33 };

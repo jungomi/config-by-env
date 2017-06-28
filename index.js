@@ -47,12 +47,14 @@ function mergeObjects(base, extension, options = {}) {
 
 /**
  * Creates a config by merging the `common` config and the config(s) that match
- * the current NODE_ENV. If no NODE_ENV is set, it defaults to `development`.
+ * the current CONFIG_BY_ENV (if set) or NODE_ENV. If neither CONFIG_BY_ENV nor
+ * NODE_ENV is set, it defaults to `development`.
  *
  * @param {Object} config Each property is a config (object) which will be
- * merged into the final config when the key matches NODE_ENV. Additionally the
- * `common` property can be used, which will always be used, regardless of the
- * NODE_ENV.
+ * merged into the final config when the key matches the environment.
+ * Additionally the `common` property can be used, which will always be used,
+ * regardless of the current environment.
+ *
  * @param {Object} [options = {}]
  * @param {Boolean} [options.overwrite] Overwrite existing properties instead of
  * merging them.
@@ -60,7 +62,8 @@ function mergeObjects(base, extension, options = {}) {
  * config(s) of the current NODE_ENV.
  */
 function configByEnv(config, options = {}) {
-  const env = process.env.NODE_ENV || 'development';
+  const env =
+    process.env.CONFIG_BY_ENV || process.env.NODE_ENV || 'development';
   let finalConfig = {};
 
   if (typeof config.common === 'object') {
