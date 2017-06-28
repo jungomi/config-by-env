@@ -67,6 +67,8 @@ function mergeObjects(base, extension, options = { createArray: true }) {
  * is defined in both objects, and they aren't both objects.
  * @param {Boolean} [options.shallow = false] Create a shallow merge instead of
  * a deep merge.
+ * @param {Boolean} [options.skipCommon = false] Do not use the common config as
+ * the base config.
  * @returns {Object} The config created by merging the common config with the
  * config(s) of the current NODE_ENV.
  */
@@ -75,7 +77,7 @@ function configByEnv(config, options = { createArray: true }) {
     process.env.CONFIG_BY_ENV || process.env.NODE_ENV || 'development';
   let finalConfig = {};
 
-  if (typeof config.common === 'object') {
+  if (!options.skipCommon && typeof config.common === 'object') {
     Object.assign(finalConfig, config.common);
   }
   for (const key of env.split(',')) {

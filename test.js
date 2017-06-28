@@ -66,6 +66,15 @@ test('CONFIG_BY_ENV takes precedence over NODE_ENV', t => {
   delete process.env.CONFIG_BY_ENV;
 });
 
+test('skips the common config when options.skipCommon is truthy', t => {
+  const old_env = process.env.NODE_ENV;
+  process.env.NODE_ENV = 'special';
+  const config = { common: { x: 1 }, special: { y: 2 } };
+  const result = configByEnv(config, { skipCommon: true });
+  t.deepEqual(result, config.special);
+  process.env.NODE_ENV = old_env;
+});
+
 test('creates a shallow merge when overwrite.shallow is truthy', t => {
   const base = { a: 1, b: 2 };
   const extension = { a: 99, c: 33 };
