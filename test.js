@@ -66,10 +66,10 @@ test('CONFIG_BY_ENV takes precedence over NODE_ENV', t => {
   delete process.env.CONFIG_BY_ENV;
 });
 
-test('overwrites the base properties when the overwrite option is used', t => {
+test('creates a shallow merge when overwrite.shallow is truthy', t => {
   const base = { a: 1, b: 2 };
   const extension = { a: 99, c: 33 };
-  const result = mergeObjects(base, extension, { overwrite: true });
+  const result = mergeObjects(base, extension, { shallow: true });
   t.deepEqual(result, { a: 99, b: 2, c: 33 });
 });
 

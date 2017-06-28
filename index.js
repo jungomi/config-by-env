@@ -7,17 +7,17 @@
  * For example: mergeObjects({ a: 1 }, { a: 2 }) === { a: [1, 2] }
  * Most configs accept both, an item directly and an array of items. This makes
  * it easier to combine them.
- * This behaviour is disabled when the `option.overwrite` is specified.
+ * This behaviour is disabled when the `option.shallow` is specified.
  *
  * @param {Object} base The base config.
  * @param {Object} extension The config that extends the base config.
  * @param {Object} [options = {}]
- * @param {Boolean} [options.overwrite] Overwrite existing properties instead of
- * merging them.
+ * @param {Boolean} [options.shallow = false] Create a shallow merge instead of
+ * a deep merge.
  * @returns {Object} The result of merging the base and extension config.
  */
 function mergeObjects(base, extension, options = {}) {
-  if (options.overwrite) {
+  if (options.shallow) {
     return Object.assign({}, base, extension);
   }
 
@@ -56,8 +56,8 @@ function mergeObjects(base, extension, options = {}) {
  * regardless of the current environment.
  *
  * @param {Object} [options = {}]
- * @param {Boolean} [options.overwrite] Overwrite existing properties instead of
- * merging them.
+ * @param {Boolean} [options.shallow = false] Create a shallow merge instead of
+ * a deep merge.
  * @returns {Object} The config created by merging the common config with the
  * config(s) of the current NODE_ENV.
  */
