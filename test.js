@@ -86,6 +86,19 @@ test('combines the properties into an array', t => {
   t.deepEqual(result, expected);
 });
 
+test('do not create an array when option.createArray is falsey', t => {
+  const base = { a: 1, b: [2, 3], c: 4, d: [5, 6] };
+  const extension = { a: 99, b: 87, c: [42, 12], d: [22, 33] };
+  const result = mergeObjects(base, extension, { createArray: false });
+  const expected = {
+    a: 99,
+    b: [2, 3, 87],
+    c: [4, 42, 12],
+    d: [5, 6, 22, 33]
+  };
+  t.deepEqual(result, expected);
+});
+
 test('merges properties deeply when both are an object', t => {
   const base = {
     obj: { a: 1, b: [2, 3], c: 4, d: [5, 6] },

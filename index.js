@@ -2,21 +2,24 @@
  * Creates a new object which is the result of merging the two given objects.
  * The objects are deeply merged unless the `option.overwrite` is specified.
  * It differes from a usual deep merge, by automatically creating an array if
- * the property is defined on both objects, and they aren't both objects
- * themselves.
+ * the property is defined on both objects, and they aren't both objects or
+ * arrays themselves.
  * For example: mergeObjects({ a: 1 }, { a: 2 }) === { a: [1, 2] }
  * Most configs accept both, an item directly and an array of items. This makes
- * it easier to combine them.
- * This behaviour is disabled when the `option.shallow` is specified.
+ * it easier to combine them. It can be disabled by setting `option.createArray`
+ * to `false`.
+ * This behaviour is also disabled when `option.shallow` is `true`.
  *
  * @param {Object} base The base config.
  * @param {Object} extension The config that extends the base config.
  * @param {Object} [options = {}]
+ * @param {Boolean} [options.createArray = true] Create an array when a property
+ * is defined in both objects, and they aren't both objects.
  * @param {Boolean} [options.shallow = false] Create a shallow merge instead of
  * a deep merge.
  * @returns {Object} The result of merging the base and extension config.
  */
-function mergeObjects(base, extension, options = {}) {
+function mergeObjects(base, extension, options = { createArray: true }) {
   if (options.shallow) {
     return Object.assign({}, base, extension);
   }
@@ -39,7 +42,11 @@ function mergeObjects(base, extension, options = {}) {
     ) {
       merged[key] = mergeObjects(merged[key], extension[key], options);
     } else {
-      merged[key] = [merged[key], extension[key]];
+      if (options.createArray) {
+        merged[key] = [merged[key], extension[key]];
+      } else {
+        merged[key] = extension[key];
+      }
     }
   }
   return merged;
@@ -56,12 +63,14 @@ function mergeObjects(base, extension, options = {}) {
  * regardless of the current environment.
  *
  * @param {Object} [options = {}]
+ * @param {Boolean} [options.createArray = true] Create an array when a property
+ * is defined in both objects, and they aren't both objects.
  * @param {Boolean} [options.shallow = false] Create a shallow merge instead of
  * a deep merge.
  * @returns {Object} The config created by merging the common config with the
  * config(s) of the current NODE_ENV.
  */
-function configByEnv(config, options = {}) {
+function configByEnv(config, options = { createArray: true }) {
   const env =
     process.env.CONFIG_BY_ENV || process.env.NODE_ENV || 'development';
   let finalConfig = {};
